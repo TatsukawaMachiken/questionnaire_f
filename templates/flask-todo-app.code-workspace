@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "questionnaire_f",
+			"path": "../../../questionnaire_f"
+		},
+		{
+			"path": "../../.."
+		}
+	],
+	"settings": {}
+}

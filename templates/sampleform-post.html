@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>ここはsampleform-post.htmlです</h2> 
+<h2>ここはフレイルアンケートのトップページです</h2> 
+<a>あなたのフレイルの有無をアンケートで確認します！</a> 
+<a>このデータは個人を特定しない形で研究で活用させていただく可能性があります</a>
+<a>よろしければ「はい」を押してください</a> 
+<form action="/q1" method="POST">        
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" id="yes" name="check" value="0" checked>
+        <label class="form-check-label" for="yes">はい</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" id="no" name="check" value="1">
+        <label class="form-check-label" for="no">いいえ</label>
+      </div>
+    
+      <button type="submit" class="btn btn-primary">送信</button>
+
+     
+      
+</form>
+</div>
+
+{% endblock %}

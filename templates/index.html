@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">    <h1>RoboWELL</h1>
+    <!--画像-->
+    <img src="{{ url_for('static', filename='images/logo.png') }}" width=" 426" height="240">
+    <p id="test">{{ my_dict.insert_something1 }}</p>
+    <h2>フレイルアンケート</h2> 
+    {% for title in my_dict.test_titles %}
+    <li>{{ title }}</li>
+    {% endfor %}
+    <!--フォームの機能-->>
+    <form action="/sampleform-post" method="POST">
+        <input name="data1"></input>
+        <button type="submit">送信</button>
+       
+    </form>
+    <scripttype="text/javascript"src="c.js"></script>
+    <div class="container mt-4">
+        <h2>アンケート</h2>
+        <form action="/sampleform" method="POST">        
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="yes" name="check" value="0" checked>
+                <label class="form-check-label" for="yes">はい</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="no" name="check" value="1">
+                <label class="form-check-label" for="no">いいえ</label>
+              </div>
+            
+              <button type="submit" class="btn btn-primary">送信</button>
+
+             
+              
+        </form>
+    </div>
+
+</div>
+<script src="{{ url_for('static', filename='javascript/c.js') }}"></script>
+{% endblock %}
