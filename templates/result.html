@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">    <h1>RoboWELL</h1>
+    <!--画像-->
+    <img src="{{ url_for('static', filename='images/logo.png') }}" width=" 426" height="240">
+
+    <!--フォームの機能-->
+    <form action="/index.html" method="POST">
+        <h2>結果です</h2> 
+        <h2>BMI：{{page_contents.BMI_sets}}</h2>
+        <p id="BMI_sets">{{page_contents.tips}}</p>    
+        <h2>各項目について</h2> 
+        <h2>運動：{{page_contents.motion}}</h2>
+        <h2>栄養：{{page_contents.nutrition}}</h2>
+        <h2>口腔：{{page_contents.oral}}</h2>
+        <h2>総合：{{page_contents.etc}}</h2>
+        <a href="/index">ホームに戻る</a>
+       
+    </form>
+    <scripttype="text/javascript"src="c.js"></script>
+    
+             
+              
+   
+
+</div>
+<script src="{{ url_for('static', filename='javascript/c.js') }}"></script>
+{% endblock %}

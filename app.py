@@ -1,264 +1,301 @@
+from turtle import window_height
 from flask import Flask,render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy  # 追加
 from sqlalchemy.orm import scoped_session,sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from datetime import datetime
-import os
-from datawrite import filewrite,filemakes,check_yesno
+from sklearn import svm, metrics, preprocessing, model_selection
+import pickle
+from datawrite import filewrite_name,check_yesno,fileread
+import socket
 
 
-#app.config.from_object('config')
-#db = SQLAlchemy(app)
-
-#db.create_all()
-#class Employee(app):
-#    __tablename__ = 'employee'
-#    id = db.Column(db.Integer, primary_key=True)  # システムで使う番号
-#    name = db.Column(db.String(255))  # 社員名
-#    age = db.Column(db.String(255))  # 年齢
-#    hight = db.Column(db.String(255))  # 身長
-#    weight = db.Column(db.String(255))  # 体重
-#    streng = db.Column(db.String(255))  # 握力
 app = Flask(__name__)
 """回答保存用20221018"""
-body=[]
+body_set=[]
+name_set=[]
+data_box=[]
+analys_data=[]
+question=fileread()
+j=0
+k=0
 
 
+print("start network")
+addr = ("192.168.3.15", 50007)  # 192.168.0.9
 
+print("network setup started")
+def convert_1d_to_2d(l, cols):
+    return [l[i:i + cols] for i in range(0, len(l), cols)]
+"""csvを読み取って次の行を決定する→トップページの「はい」でその行にIDを当てる、IDを渡し続けて配列に突っ込んだらはい押した端末と回答が紐づけられる？"""
+def get_fortune(food_list,age):
+    print("fortune_start")
+    food_meet=0
+    food_fish=0
+    food_egg=0
+    food_soy=0
+    food_milk=0
+    food_veg=0
+    food_sea=0
+    food_potato=0
+    food_fruit=0
+    food_oil=0
+    for k in range(len(food_list)):
+        if(int(food_list[k])==1):
+            food_meet = 1
+        if(int(food_list[k])==2):
+            food_fish = 1
+        if(int(food_list[k])==3):
+            food_egg = 1
+        if(int(food_list[k])==4):
+            food_soy = 1
+        if(int(food_list[k])==5):
+            food_milk = 1
+        if(int(food_list[k])==6):
+            food_veg = 1
+        if(int(food_list[k])==7):
+            food_sea = 1
+        if(int(food_list[k])==8):
+            food_potato = 1
+        if(int(food_list[k])==9):
+            food_fruit = 1
+        if(int(food_list[k])==10):
+            food_oil = 1
 
-"""ページ遷移"""
-def getpage_method(title,nextname,question):
-    my_dict = {'type':title,'nextpage':nextname,'insert_something1': question}
-    return render_template('question.html', my_dict=my_dict)
+    X_test=[[float(age),food_meet,food_fish,food_egg,food_soy,food_milk,food_veg,food_sea,food_potato,food_fruit,food_oil]]
+    print(X_test)
+    loaded_model = pickle.load(open("model_htn.sav", 'rb'))
+    pre=loaded_model.predict(X_test)
+    print(pre)
+    return pre
+
 
 """回答保存"""
-def getanswer_method(title,number):
+def getanswer_method(number):
+    print(number)
     if request.method == "POST":
         answer= request.form['check']
-        answer=check_yesno(answer)        
-        body.insert(number,['','','',str(number),title,answer])
+        data_box.insert(number,answer)
+        answer=check_yesno(answer) 
+        print(answer)
+        
+        body_set.insert(number,str(answer))
         """テスト出力"""
         if(number==3):
-            print(body)
-            filewrite(body)
-            return 0
-        return 0
-    else:
-        return getpage_method('エラーが発生しました','/error','404')
+            print(body_set)
+        return data_box
+def change_b(body_set):
+     if(body_set=="はい"):
+            body_set_int=1
+     elif(body_set=="いいえ"):
+            body_set_int=0
+     print(body_set_int)
+     return body_set_int
+def change(body_set):
+     if(body_set=="いいえ"):
+            body_set_int=1
+     elif(body_set=="はい"):
+            body_set_int=0
+     print(body_set_int)
+     return body_set_int
 
+def getname_method(name,sex,age,hight,weight):
+    if request.method == "POST":     
+        name_set=[str(name),str(sex),str(age),str(hight),str(weight)]
+        motion_Frailty=0
+        nutrition_Frailty=0
+        oral_Frailty=0
+        etc_Frailty=0
+       
+        etc_Frailty = etc_Frailty + change(body_set[0])        
+        etc_Frailty = etc_Frailty + change(body_set[1])
+        etc_Frailty = etc_Frailty + change(body_set[2])
+        etc_Frailty = etc_Frailty +  change(body_set[3])
+        etc_Frailty = etc_Frailty +  change(body_set[4])
+        motion_Frailty = motion_Frailty + change(body_set[5])
+        motion_Frailty = motion_Frailty +  change(body_set[6])
+        motion_Frailty = motion_Frailty +  change(body_set[7])
+        motion_Frailty = motion_Frailty +  change_b(body_set[8])
+        motion_Frailty = motion_Frailty +  change_b(body_set[9])
+        nutrition_Frailty=nutrition_Frailty+ change_b(body_set[10])
+        oral_Frailty=oral_Frailty+change_b(body_set[11])
+        oral_Frailty=oral_Frailty+change_b(body_set[12])
+        oral_Frailty=oral_Frailty+change_b(body_set[13])
+        etc_Frailty = etc_Frailty + change(body_set[14])
+        etc_Frailty = etc_Frailty + change_b(body_set[15])
+        etc_Frailty = etc_Frailty + change_b(body_set[16])
+        etc_Frailty = etc_Frailty + change(body_set[17])
+        etc_Frailty = etc_Frailty + change_b(body_set[18])
+        
+        BMI=int(weight)/(int(hight)/100*int(hight)/100)
+        
     
-@app.route('/q1', methods=['GET', 'POST'])
-def form_q1():
-    age=50
-    filemakes('フレイルある人',str(age))
-    getanswer_method('バスや電車で1人で外出しますか?',1)
-    return getpage_method('ここはq1です','/q2','バスや電車で1人で外出しますか?')
 
-@app.route('/q2', methods=['GET', 'POST'])
-def form_q2():
-    getanswer_method('日用品の買い物をしていますか?',2)
-    return getpage_method('ここはq2です','/q3','日用品の買い物をしていますか?')
+       
+        
+        
+    if (BMI<18.5):
+            a=1
+    else: 
+            a=0
+    nutrition_Frailty=nutrition_Frailty+a
+    
+    if(motion_Frailty>3):
+        motion_Frailty_check="運動フレイルの傾向が見られます"
+    else:
+        motion_Frailty_check="運動フレイルの傾向は見られません"   
 
-@app.route('/q3', methods=['GET', 'POST'])
-def form_q3():
-    getanswer_method('預貯金の出し入れをしていますか?',3)
-    return getpage_method('ここはq3です','/q4','預貯金の出し入れをしていますか?')
-@app.route('/q4', methods=['GET', 'POST'])
-def form_q4():
-    getanswer_method('友人の家を訪ねていますか?',4)
-    return getpage_method('ここはq4です','/q5','友人の家を訪ねていますか?')
-@app.route('/q5', methods=['GET', 'POST'])
-def form_q5():
-    return getpage_method('ここはq5です','/q6','家族や友人の相談に乗っていますか？')
+    if(nutrition_Frailty>2):
+        nutrition_Frailty_check="栄養フレイルの傾向が見られます"
+    else:
+        nutrition_Frailty_check="栄養フレイルの傾向は見られません"
 
-@app.route('/q6', methods=['GET', 'POST'])
-def form_q6():
-    return getpage_method('ここはq6です','/q7','階段を手すりや壁を使わずに昇っていますか？')
 
-@app.route('/q7', methods=['GET', 'POST'])
-def form_q7():
-    return getpage_method('ここはq7です','/q7','椅子に座った状態から手を付かずに立ち上がれますか？')
+    if(oral_Frailty>2):
+        oral_Frailty_check="口腔フレイルの傾向が見られます"
+    else:
+        oral_Frailty_check="口腔フレイルの傾向は見られません"
+    print(oral_Frailty_check)
+       
+    if(etc_Frailty+motion_Frailty+nutrition_Frailty+oral_Frailty>10):
+        etc_Frailty_check="特出した項目は見られませんがフレイルの傾向が見られます"
+    else:
+        etc_Frailty_check="特出した項目は見られません"
+   
+    print(motion_Frailty)
+    print(nutrition_Frailty)
+    print(oral_Frailty)
+    print(etc_Frailty_check)
+    filewrite_name(name_set,body_set)
+    
+    return  motion_Frailty_check,nutrition_Frailty_check,oral_Frailty_check,etc_Frailty_check
 
-@app.route('/')
-def index():
-        my_dict = {
+"""
+def get_answer(number):
+     if request.method == "POST":
+        answer= request.form['check']
+        data_box[number]=answer
+        return data_box
+"""
+
+
+        
+
+
+              
+@app.route('/q<i>', methods=['GET', 'POST'])
+def q_form(i="0"):
+        if  (int(i)==0):
+            page_contents = {'type':'ここはq'+ str(i) +'です','nextpage':'/q'+ str(int(i)+1) ,
+        'insert_something1': question[int(i)-1]}
+            return render_template('question.html', page_contents=page_contents)
+        elif(int(i)<len(question)):
+            page_contents = {'type':'ここはq'+ str(i) +'です','nextpage':'/q'+ str(int(i)+1),'insert_something1': question[int(i)-1]}
+            data_box=getanswer_method(int(i)-1)
+            return render_template('question.html', page_contents=page_contents)
+        elif(int(i) == len(question)):
+            data_box=getanswer_method(int(i)-1)
+        
+            page_contents = {'type':'ここはq'+ str(i) +'です','nextpage':'personaldata.html','insert_something1':'最後に下の問題に答えてください'}
+
+            return render_template('personaldata.html', page_contents=page_contents)
+
+@app.route('/personaldata.html', methods=['GET', 'POST'])
+def p_form():
+    name= request.form['name']
+    sex=request.form['sex']
+    age= request.form['age']
+    hight= request.form['hight']
+    weight= request.form['weight']
+   
+    motion_Frailty_check,nutrition_Frailty_check,oral_Frailty_check,etc_Frailty_check= getname_method(name,sex,age,hight,weight)
+    BMI=int(weight)/(int(hight)/100*int(hight)/100)
+    
+    print(BMI)
+    if (BMI<18.5):
+        tips='やせ型です'
+    elif(BMI>30):
+         tips='やや肥満ぎみです'
+    else:
+        tips='健康な体型です'
+    BMI="{:.1f}".format(BMI)
+    
+   
+
+    page_contents = {'nextpage':'result.html','insert_something1': '回答終了です', 'BMI_sets':BMI,'tips':tips,'motion':motion_Frailty_check,'nutrition':nutrition_Frailty_check,'oral':oral_Frailty_check,'etc':etc_Frailty_check}
+    return render_template('result.html', page_contents=page_contents)
+
+@app.route('/result-fort',methods=['GET', 'POST'])
+def fort_result_form_temp():
+    if request.method == "POST":
+        sex=request.form['sex']
+        age= float(request.form['age'])*0.01
+        print("get_data")
+        foods = request.form.getlist("food")
+        ans=get_fortune(foods,age) 
+        if(ans==0):
+            tips="苦手な食べ物が似ている方の内、高血圧の方は少ないです。"
+            #表現を検討2022/12/14
+        
+        elif(ans==1):
+            tips="苦手な食べ物が似ている方の内、高血圧の方が多いです。食生活に注意しましょう。"    
+
+    page_contents = {'type':'食べ物占い','insert_something1':tips}
+    return render_template('result-fort.html', page_contents=page_contents)
+
+
+@app.route('/result.html', methods=['GET', 'POST'])
+def end_form():    
+    page_contents = {
+        'insert_something1': 'RoboWELL（ロボウェル）って?',
+        'insert_something2': 'views.pyのinsert_something2部分です。',
+        }
+    return render_template('index.html', page_contents=page_contents)
+
+@app.route('/index')
+def rool_form():
+       
+        page_contents = {
         'insert_something1': 'RoboWELL（ロボウェル）って?',
         'insert_something2': 'views.pyのinsert_something2部分です。',
          'test_titles': ['質問1', '質問2', '質問3']
         }
-        return render_template('index.html', my_dict=my_dict) # 変更
+        return render_template('index.html', page_contents=page_contents) # 変更
 
-@app.route('/comp', methods=['GET', 'POST'])   
-def comp_form():
-        my_dict = {
-            'type':'ここはcompです','nextpage':'index.html',
-            'insert_something1': "回答ありがとうございます。"
-            }
-        return redirect(url_for('index.html'), my_dict=my_dict)
+@app.route('/fort')
+def fort_form_temp():
+    i=0
+    page_contents = {'type':'食べ物占い','insert_something1':'普段あまり食べない食べ物にチェックマークをつけてね'}
+    return render_template('fort.html', page_contents=page_contents)
 
-@app.route('/sampleform-post', methods=['POST'])
+
+
+
+@app.route('/')
+def index():
+       
+        page_contents = {
+        'insert_something1': 'RoboWELL（ロボウェル）って?',
+        'insert_something2': 'views.pyのinsert_something2部分です。',
+         'test_titles': ['質問1', '質問2', '質問3']
+        }
+        return render_template('index.html', page_contents=page_contents) # 変更
+
+       
+
+@app.route('/sampleform-post')
 def sample_form_temp():
-        print('POSTデータ受け取ったので処理します')
-        my_dict2 = {'tern_something1':"回答ありがとうございます。"}
-        return render_template('sampleform-post.html', my_dict=my_dict2)
+
+    i="1"
+    saved_pues=question
+    print(question)
+    
+    page_contents = {'type':'それではアンケートを始めます','insert_something1': saved_pues[int(i)-1]}
+    return render_template('sampleform-post.html', page_contents=page_contents)
         
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
 
-#@app.route('/add_employee', methods=['GET', 'POST'])
-#def add_employee():
- #   if request.method == 'GET':
-  #      return render_template('add_employee.html')
-  #  if request.method == 'POST':
-  #      employee = Employee(
-  #          name = "kouki" , # 社員名
-  #          age = "24"  ,# 年齢
-  #          hight = "175" , # 身長
-  #          weight = "54" , # 体重
-  #          streng = "45"  # 握力
-  #      )
-  #      db.session.add(employee)
-  #      db.session.commit()
-  #      return redirect(url_for('index'))
-
-
-
-
-
-
-
-
-    '''@app.route('/q1', methods=['GET', 'POST'])
-
-@app.route('/q8', methods=['GET', 'POST'])
-def q8_form():
-    my_dict = {
-        'type':'ここはq8です','nextpage':'/q9',
-        'insert_something1': '15分位続けて歩いていますか？'
-        }
-    return render_template('question.html', my_dict=my_dict)
-@app.route('/q9', methods=['GET', 'POST'])   
-def q9_form():
-    my_dict = {
-        'type':'ここはq9です','nextpage':'/q10',
-        'insert_something1': 'ここ1年間で転んだことはありますか？'
-        }
-    return render_template('question.html', my_dict=my_dict)
-@app.route('/q10', methods=['GET', 'POST'])   
-def q10_form():
-    my_dict = {
-        'type':'ここはq10です','nextpage':'/q11',
-        'insert_something1': '転倒に対して不安がありますか？'
-        }
-    return render_template('question.html', my_dict=my_dict)
-
-@app.route('/q11', methods=['GET', 'POST'])   
-def q11_form():
-    my_dict = {
-        'type':'ここはq11です','nextpage':'/q12',
-        'insert_something1': '6ヵ月間で2-3kg体重が減少しましたか？'
-        }
-    return render_template('question.html', my_dict=my_dict)
-@app.route('/q12', methods=['GET', 'POST'])   
-def q12_form():
-    my_dict = {
-        'type':'ここはq12です','nextpage':'/q13',
-        'insert_something1': '半年前に比べて硬いものが食べにくくなりましたか？'
-        }
-
- 
-    return render_template('question.html', my_dict=my_dict)
-
-@app.route('/q13', methods=['GET', 'POST'])   
-def q13_form():
-    my_dict = {
-        'type':'ここはq13です','nextpage':'/q14',
-        'insert_something1': 'お茶や汁物でむせることがありますか？'
-        }
-    return render_template('question.html', my_dict=my_dict)
-@app.route('/q14', methods=['GET', 'POST'])   
-def q14_form():
-    my_dict = {
-        'type':'ここはq14です','nextpage':'/q15',
-        'insert_something1': '口の渇きが気になりますか？'
-        }
-    return render_template('question.html', my_dict=my_dict)
-
-@app.route('/q15', methods=['GET', 'POST'])   
-def q15_form():
-    my_dict = {
-        'type':'ここはq15です','nextpage':'/q16',
-        'insert_something1': '週に1回以上外出していますか？'
-        }
-    return render_template('question.html', my_dict=my_dict)
-@app.route('/q16', methods=['GET', 'POST'])   
-def q16_form():
-    my_dict = {
-        'type':'ここはq16です','nextpage':'/q17',
-        'insert_something1': '昨年と比べて外出の回数が減っていますか？'
-        }
-    return render_template('question.html', my_dict=my_dict)
-
-@app.route('/q17', methods=['GET', 'POST'])   
-def q17_form():
-    my_dict = {
-        'type':'ここはq17です','nextpage':'/q18',
-        'insert_something1': '周りの人から「いつも同じことを聞く」等と言われたり物忘れがあると言われますか？'
-        }
-    return render_template('question.html', my_dict=my_dict)
-@app.route('/q18', methods=['GET', 'POST'])   
-def q18_form():
-    my_dict = {
-        'type':'ここはq18です','nextpage':'/q19',
-        'insert_something1': '自分で電話番号を調べて、電話をかけることをしていますか？'
-        }
-    return render_template('question.html', my_dict=my_dict)
-@app.route('/q19', methods=['GET', 'POST'])   
-def q19_form():
-    my_dict = {
-        'type':'ここはq19です','nextpage':'/q20',
-        'insert_something1': '今日が何月何日かわからなことがありますか？'
-        }
-    return render_template('question.html', my_dict=my_dict)
-
-@app.route('/q20', methods=['GET', 'POST'])   
-def q20_form():
-    my_dict = {
-        'type':'ここはq20です','nextpage':'/q21',
-        'insert_something1': '毎日の生活に充実感がありませんか？（ここ2週間）'
-        }
-    return render_template('question.html', my_dict=my_dict)
-
-@app.route('/q21', methods=['GET', 'POST'])   
-def q21_form():
-    my_dict = {
-        'type':'ここはq21です','nextpage':'/q22',
-        'insert_something1': 'これまで楽しんでやれたことが楽しめなくなりましたか？（ここ2週間）'
-        }
-    return render_template('question.html', my_dict=my_dict)
-@app.route('/q22', methods=['GET', 'POST'])   
-def q22_form():
-    my_dict = {
-        'type':'ここはq22です','nextpage':'/q23',
-        'insert_something1': '以前は楽にできていたことが今ではおっくうに感じられますか？（ここ2週間）'
-        }
-    return render_template('question.html', my_dict=my_dict)
-
-@app.route('/q23', methods=['GET', 'POST'])   
-def q23_form():
-    my_dict = {
-        'type':'ここはq23です','nextpage':'/q24',
-        'insert_something1': '自分が役に立つ人間だと思いますか？（ここ2週間）'
-        }
-    return render_template('question.html', my_dict=my_dict)
-
-@app.route('/q24', methods=['GET', 'POST'])   
-def q24_form():
-    my_dict = {
-        'type':'ここはq24です','nextpage':'/add_employee',
-        'insert_something1': 'わけもなく疲れ多様な感じがしますか？（ここ2週間）'
-        }
-    return render_template('question.html', my_dict=my_dict)'''
 
 
 

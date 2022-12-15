@@ -5,10 +5,10 @@
    <div class="container mt-4">
     <h2>フレイルアンケート</h2>
     <scripttype="text/javascript"src="sample.js"></script>
-    <p id="test">{{ my_dict.type }}</p>
-    <p id="test">{{ my_dict.insert_something1 }}</p>
-    <form  action=  {{my_dict.nextpage}}   method="POST">  
-      <form action=  "../ques.py"  method="POST">
+    <p id="test">{{ page_contents.type }}</p>
+    <p id="test">{{ page_contents.insert_something1 }}</p>
+    <form  action=  {{page_contents.nextpage}}   method="POST">  
+      <form action=  "../app.py"  method="POST">
         <div class="form-check form-check-inline">
             <input class="form-check-input" type="radio" id="yes" name="check" value="0" checked>
             <label for= "name" class="form-check-label" for="yes">はい</label>
@@ -18,11 +18,11 @@
             <label class="form-check-label" for="no">いいえ</label>
           </div>
         
-          <button type="submit" class="btn btn-primary">送信</button>
-          <div><a href="#">ページトップへ戻る</a></div>
-          <a id="createFile" href="#" download="outFile.txt" value="ファイル作成" onclick="dispText()">ファイル作成</a>
+          <button type="submit" class="btn btn-primary">次へ</button>
+          
     
         </form>
+      </form>
     </div>
 </div>
 

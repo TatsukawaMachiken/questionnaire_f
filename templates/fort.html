@@ -1,0 +1,74 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">    <h1>RoboWELL</h1>
+   <div class="container mt-4">
+    <h2>{{page_contents.insert_something1}}</h2>
+    <scripttype="text/javascript"src="sample.js"></script>
+    <form action="/result-fort" method="POST"> 
+    <input type="checkbox" name="food" id="food1" value="1"><label for="food1">お肉</label>
+    <input type="checkbox" name="food" id="food2" value="2"><label for="food2">魚</label>
+    <input type="checkbox" name="food" id="food3" value="3"><label for="food3">卵</label>
+    <input type="checkbox" name="food" id="food4" value="4"><label for="food4">大豆</label>
+    <input type="checkbox" name="food" id="food5" value="5"><label for="food5">牛乳</label>
+    <input type="checkbox" name="food" id="food6" value="6"><label for="food6">野菜</label>
+    <input type="checkbox" name="food" id="food7" value="7"><label for="food7">海藻</label>
+    <input type="checkbox" name="food" id="food8" value="8"><label for="food8">芋</label>
+    <input type="checkbox" name="food" id="food9" value="9"><label for="food9">果物</label>
+    <input type="checkbox" name="food" id="food10" value="10"><label for="food10">油</label>
+    <br>
+    <a>年齢</a><input name="age"></input>
+    <br>
+    <a>性別</a><input name="sex"></input>
+    <br>
+    <button type="submit" class="btn btn-primary">次へ</button>
+
+    </form>
+    </div>
+</div>
+
+       <!--
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="meet" name="meet" value="0" checked>
+            <label for= "name" class="form-check-label" for="meet">お肉</label>
+            
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="fish" name="fish" value="1" checked>
+            <label for= "name" class="form-check-label" for="fish">魚</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="egg" name="egg" value="2" checked>
+            <label for= "name" class="form-check-label" for="egg">卵</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="soy" name="soy" value="3" checked>
+            <label for= "name" class="form-check-label" for="soy">大豆</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="milk" name="milk" value="4" checked>
+            <label for= "name" class="form-check-label" for="milk">牛乳</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="veg" name="veg" value="5" checked>
+            <label for= "name" class="form-check-label" for="veg">野菜</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="sea" name="sea" value="6" checked>
+            <label for= "name" class="form-check-label" for="sea">海藻</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="potato" name="patato" value="7" checked>
+            <label for= "name" class="form-check-label" for="potato">芋</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="fruit" name="fruit" value="8" checked>
+            <label for= "name" class="form-check-label" for="fruit">果物</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="oil" name="oil" value="9" checked>
+            <label for= "name" class="form-check-label" for="oil">油</label>
+          </div>
+        -->
+
+{% endblock %}

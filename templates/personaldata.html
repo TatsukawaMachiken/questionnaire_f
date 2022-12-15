@@ -1,0 +1,24 @@
+
+
+{% extends "layout.html" %}
+
+{% block content %}
+<form  action=  {{page_contents.nextpage}}   method="POST">  
+    <p id="test">{{ page_contents.insert_something1 }}</p>
+    <h2>1.名前</h2><input name="name"></input>
+    <h2>2.年齢</h2><input name="age"></input>
+    <h2>3.性別</h2><input name="sex"></input>
+    <h2>4.身長</h2><input name="hight"></input>
+    <h2>5.体重</h2><input name="weight"></input>
+    <button type="submit">次へ</button>
+   
+</form>
+<scripttype="text/javascript"src="c.js"></script>
+
+         
+          
+
+
+</div>
+<scripttype="text/javascript"src="sample.js"></script>
+{% endblock %}

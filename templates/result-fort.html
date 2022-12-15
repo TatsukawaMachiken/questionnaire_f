@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">    <h1>RoboWELL</h1>
+    <!--画像-->
+    <img src="{{ url_for('static', filename='images/logo.png') }}" width=" 426" height="240">
+    <br>
+    <a>{{page_contents.insert_something1}}</a>
+    <br>
+    <a>フレイルは栄養だけでなく運動不足によっても進行します。<br>適度な運動とバランスのいい食事を心がけましょう！</a>
+  
+    <scripttype="text/javascript"src="c.js"></script>
+    </div>
+<script src="{{ url_for('static', filename='javascript/c.js') }}"></script>
+{% endblock %}
