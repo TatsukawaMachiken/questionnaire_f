@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container">    <h1>RoboWELL</h1>
+<div class="container">    <h1>食べ物占い</h1>
    <div class="container mt-4">
-    <h2>{{page_contents.insert_something1}}</h2>
+    <h2>{{page_contents.insert_something1}}</h2><br>
     <scripttype="text/javascript"src="sample.js"></script>
     <form action="/result-fort" method="POST"> 
     <input type="checkbox" name="food" id="food1" value="1"><label for="food1">お肉</label>
@@ -16,11 +16,11 @@
     <input type="checkbox" name="food" id="food8" value="8"><label for="food8">芋</label>
     <input type="checkbox" name="food" id="food9" value="9"><label for="food9">果物</label>
     <input type="checkbox" name="food" id="food10" value="10"><label for="food10">油</label>
-    <br>
+    <br><br>
     <a>年齢</a><input name="age"></input>
-    <br>
+    <br><br>
     <a>性別</a><input name="sex"></input>
-    <br>
+    <br><br>
     <button type="submit" class="btn btn-primary">次へ</button>
 
     </form>

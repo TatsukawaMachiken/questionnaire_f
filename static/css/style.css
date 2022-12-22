@@ -2,3 +2,30 @@ h1 {
     color: orange;
     border-bottom: double 6px #87CEFA;
 }
+
+
+
+.img_block img{ 
+                 margin:0 auto;
+                 display:block;
+                 width: 45%; 
+                 height: auto;  
+
+                
+                
+               }
+
+              
+
+.img_check{
+  text-align:center;
+              }
+
+.img_check img{
+    display: inline;
+    text-align: center;
+    width: 35%;
+    height: auto; 
+
+
+}

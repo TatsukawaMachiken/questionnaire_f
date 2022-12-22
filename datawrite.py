@@ -29,6 +29,7 @@ def filewrite_name(name_set,body):
     body.clear()
     #question.clear()
     file.close()
+    body=[]
     return 0
 
 """def filewrite_data(:

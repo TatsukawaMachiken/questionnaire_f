@@ -158,7 +158,7 @@ def getname_method(name,sex,age,hight,weight):
     print(oral_Frailty_check)
        
     if(etc_Frailty+motion_Frailty+nutrition_Frailty+oral_Frailty>10):
-        etc_Frailty_check="特出した項目は見られませんがフレイルの傾向が見られます"
+        etc_Frailty_check="総合的にフレイルの傾向が見られます"
     else:
         etc_Frailty_check="特出した項目は見られません"
    
@@ -186,17 +186,17 @@ def get_answer(number):
 @app.route('/q<i>', methods=['GET', 'POST'])
 def q_form(i="0"):
         if  (int(i)==0):
-            page_contents = {'type':'ここはq'+ str(i) +'です','nextpage':'/q'+ str(int(i)+1) ,
+            page_contents = {'type':'質問'+ str(i) ,'nextpage':'/q'+ str(int(i)+1) ,
         'insert_something1': question[int(i)-1]}
             return render_template('question.html', page_contents=page_contents)
         elif(int(i)<len(question)):
-            page_contents = {'type':'ここはq'+ str(i) +'です','nextpage':'/q'+ str(int(i)+1),'insert_something1': question[int(i)-1]}
+            page_contents = {'type':'質問'+ str(i) ,'nextpage':'/q'+ str(int(i)+1),'insert_something1': question[int(i)-1]}
             data_box=getanswer_method(int(i)-1)
             return render_template('question.html', page_contents=page_contents)
         elif(int(i) == len(question)):
             data_box=getanswer_method(int(i)-1)
         
-            page_contents = {'type':'ここはq'+ str(i) +'です','nextpage':'personaldata.html','insert_something1':'最後に下の問題に答えてください'}
+            page_contents = {'type':'質問'+ str(i),'nextpage':'personaldata.html','insert_something1':'最後に下の問題に答えてください'}
 
             return render_template('personaldata.html', page_contents=page_contents)
 
@@ -285,16 +285,22 @@ def index():
 
 @app.route('/sampleform-post')
 def sample_form_temp():
-
     i="1"
     saved_pues=question
     print(question)
     
     page_contents = {'type':'それではアンケートを始めます','insert_something1': saved_pues[int(i)-1]}
     return render_template('sampleform-post.html', page_contents=page_contents)
+@app.route('/robowell')
+def robo_form():    
+    page_contents = {
+        'insert_something1': 'RoboWELL（ロボウェル）って?',
+        'insert_something2': 'views.pyのinsert_something2部分です。',
+        }
+    return render_template('robowell.html', page_contents=page_contents)
         
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0', port=5000)
 
 
 

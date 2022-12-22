@@ -1,12 +1,11 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container">    <h1>RoboWELL</h1>
+<div class="container">    <h1>フレイルチェック</h1>
    <div class="container mt-4">
-    <h2>フレイルアンケート</h2>
     <scripttype="text/javascript"src="sample.js"></script>
     <p id="test">{{ page_contents.type }}</p>
-    <p id="test">{{ page_contents.insert_something1 }}</p>
+    <h2 id="test">{{ page_contents.insert_something1 }}</h2>
     <form  action=  {{page_contents.nextpage}}   method="POST">  
       <form action=  "../app.py"  method="POST">
         <div class="form-check form-check-inline">

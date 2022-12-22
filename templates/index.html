@@ -1,27 +1,26 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container">    <h1>RoboWELL</h1>
+<body>
+<div class="container"> 
     <!--画像-->
-    <img src="{{ url_for('static', filename='images/logo.png') }}" width=" 426" height="240">
-
- 
-    <br>
-    <a href="/sampleform-post">フレイルアンケート</a> <a>,</a><a href="/fort">食べ物占い</a>
-
-    <p>我々、兵庫県立福祉のまちづくり研究所では、高齢者の健康長寿を実現するための取り組みを「RoboWELL」と名付け、活動を進めています。</p>
-    <p>「RoboWELL」とは、兵庫県立福祉のまちづくり研究所における、RobotやRobot技術を活用した健康長寿を実現するための取り組みです。</p>
-    <p> Robot Wellness、Robot Wellbeingから「RoboWELL」と名付けました。</p>
-    <p> RoboWELLでは現在、兵庫県の市町、自治体を対象に研究所で開発した評価機器を用いた健康教室を実施しております。</p>
-    <p>その中で、地域の住民や支援される方々から手軽に取り組める体操を求める声があり、「RoboWELL体操」という体操を考案・制作しました。</p>
- 
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/sUynUMYCO5I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-    <scripttype="text/javascript"src="c.js"></script>
     
-             
-              
+   <div class="img_block">
+   <img src="{{ url_for('static', filename='images/logo2.png') }}" >
+  </div>
+    <br>
+        <h2  style="text-align:center">気になるコンテンツをクリックしてね</h2>
+    <div class="img_check">
+    <a href="/robowell" ><img src="{{ url_for('static', filename='images/a.PNG') }}"></a>
+    <a href="/sampleform-post"><img src="{{ url_for('static', filename='images/b.PNG') }}"></a>
+    </div>
    
+    <div class="img_check">
+    <a href="/fort"><img src="{{ url_for('static', filename='images/c.PNG') }}"></a>
+    <a href="https://www.youtube.com/embed/sUynUMYCO5I"><img src="{{ url_for('static', filename='images/d.PNG') }}"></a><br>
+    </div>
+    <scripttype="text/javascript"src="c.js"></script>
 
 </div>
-<script src="{{ url_for('static', filename='javascript/c.js') }}"></script>
+</body>
 {% endblock %}

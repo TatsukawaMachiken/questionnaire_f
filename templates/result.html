@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container">    <h1>RoboWELL</h1>
+<div class="container">    <h1>フレイルチェック</h1>
     <!--画像-->
     <img src="{{ url_for('static', filename='images/logo.png') }}" width=" 426" height="240">
 
@@ -18,12 +18,5 @@
         <a href="/index">ホームに戻る</a>
        
     </form>
-    <scripttype="text/javascript"src="c.js"></script>
-    
-             
-              
-   
-
 </div>
-<script src="{{ url_for('static', filename='javascript/c.js') }}"></script>
 {% endblock %}
